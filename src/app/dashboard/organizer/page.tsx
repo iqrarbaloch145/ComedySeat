@@ -146,7 +146,7 @@ export default function OrganizerDashboardPage() {
   // Handle Create Event
   const handleCreateNewEvent = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle) return;
+    if (!newTitle || !myOrganizer) return;
 
     db.createEvent({
       organizer_id: myOrganizer.id,
@@ -396,7 +396,7 @@ export default function OrganizerDashboardPage() {
                   {!sidebarCollapsed && (
                     <div className="flex items-center justify-between w-full">
                       <span>Payouts</span>
-                      <span className={`w-2 h-2 rounded-full ${myOrganizer.stripe_account_status === 'active' ? 'bg-emerald-400' : 'bg-rose-400'}`} />
+                      <span className={`w-2 h-2 rounded-full ${myOrganizer?.stripe_account_status === 'active' ? 'bg-emerald-400' : 'bg-rose-400'}`} />
                     </div>
                   )}
                 </button>
@@ -1240,7 +1240,7 @@ export default function OrganizerDashboardPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
-                    myOrganizer.stripe_account_status === 'active' 
+                    myOrganizer?.stripe_account_status === 'active' 
                       ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                       : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
                   }`}>
@@ -1250,13 +1250,13 @@ export default function OrganizerDashboardPage() {
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="text-base font-bold text-white">Stripe Connect Custom/Standard Gateway</span>
-                      <Badge variant={myOrganizer.stripe_account_status === 'active' ? 'success' : 'destructive'} className="uppercase text-[10px]">
-                        {myOrganizer.stripe_account_status.replace('_', ' ')}
+                      <Badge variant={myOrganizer?.stripe_account_status === 'active' ? 'success' : 'destructive'} className="uppercase text-[10px]">
+                        {(myOrganizer?.stripe_account_status ?? 'not_connected').replace('_', ' ')}
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-400 leading-relaxed max-w-xl">
-                      {myOrganizer.stripe_account_status === 'active' ? (
-                        <>Connected merchant account <span className="font-mono text-emerald-400 font-semibold">{myOrganizer.stripe_account_id}</span>. Direct payments for tickets bypass the marketplace and settle straight into your club&apos;s verified bank account.</>
+                      {myOrganizer?.stripe_account_status === 'active' ? (
+                        <>Connected merchant account <span className="font-mono text-emerald-400 font-semibold">{myOrganizer?.stripe_account_id}</span>. Direct payments for tickets bypass the marketplace and settle straight into your club&apos;s verified bank account.</>
                       ) : (
                         <>No active Stripe merchant account attached. Buyers checking out for your events will be blocked until your gateway is linked.</>
                       )}
@@ -1265,11 +1265,11 @@ export default function OrganizerDashboardPage() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  {myOrganizer.stripe_account_status === 'active' ? (
+                  {myOrganizer?.stripe_account_status === 'active' ? (
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => disconnectStripeAccount(myOrganizer.id)}
+                      onClick={() => myOrganizer && disconnectStripeAccount(myOrganizer.id)}
                       className="text-rose-400 border-rose-500/30 hover:bg-rose-950/40 rounded-full"
                     >
                       Simulate Disconnect (Test Blocked Checkout)
@@ -1277,7 +1277,7 @@ export default function OrganizerDashboardPage() {
                   ) : (
                     <Button
                       size="sm"
-                      onClick={() => connectStripeAccount(myOrganizer.id)}
+                      onClick={() => myOrganizer && connectStripeAccount(myOrganizer.id)}
                       className="bg-gradient-to-r from-[#d9072a] to-[#99051d] hover:from-[#c00624] hover:to-[#820418] text-white rounded-full shadow-lg shadow-[#d9072a]/25"
                     >
                       Connect Stripe Account
