@@ -45,6 +45,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { AuthGate } from '@/components/AuthGate';
 import { ComedySeatLogo } from '@/components/ComedySeatLogo';
+import { DashboardProfileMenu } from '@/components/DashboardProfileMenu';
 
 export default function CustomerDashboardPage() {
   const { user, upgradeToOrganizer, logout } = useAuth();
@@ -392,24 +393,8 @@ export default function CustomerDashboardPage() {
               <span className="w-2 h-2 rounded-full bg-[#d9072a] absolute top-2.5 right-2.5" />
             </button>
 
-            {/* User Profile */}
-            <div className="flex items-center gap-3 pl-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-[#d9072a]/50 shadow-md shadow-[#d9072a]/20">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&h=160&q=80"
-                  alt={user.full_name || 'Customer'}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="hidden sm:block text-left">
-                <div className="font-bold text-sm text-white leading-tight">
-                  {user.full_name}
-                </div>
-                <div className="text-[11px] text-[#ff4d6d] font-semibold">
-                  ComedySeat Fan
-                </div>
-              </div>
-            </div>
+            {/* User Profile – real user data, clickable with Settings + Logout */}
+            <DashboardProfileMenu accentColor="red" />
           </div>
         </header>
 

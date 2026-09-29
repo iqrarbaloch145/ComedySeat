@@ -44,6 +44,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { AuthGate } from '@/components/AuthGate';
 import { ComedySeatLogo } from '@/components/ComedySeatLogo';
+import { DashboardProfileMenu } from '@/components/DashboardProfileMenu';
 
 export default function AdminDashboardPage() {
   const { user, logout } = useAuth();
@@ -393,24 +394,8 @@ export default function AdminDashboardPage() {
               <span className="w-2 h-2 rounded-full bg-amber-400 absolute top-2.5 right-2.5" />
             </button>
 
-            {/* User Profile */}
-            <div className="flex items-center gap-3 pl-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-amber-400/50 shadow-md shadow-amber-500/20">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&h=160&q=80"
-                  alt={user.full_name || 'Admin'}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="hidden sm:block text-left">
-                <div className="font-bold text-sm text-white leading-tight">
-                  {user.full_name}
-                </div>
-                <div className="text-[11px] text-amber-400 font-semibold">
-                  Platform Administrator
-                </div>
-              </div>
-            </div>
+            {/* User Profile – real logged-in admin data, clickable with Settings + Logout */}
+            <DashboardProfileMenu accentColor="amber" />
           </div>
         </header>
 

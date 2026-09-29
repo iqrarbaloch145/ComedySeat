@@ -42,6 +42,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { AuthGate } from '@/components/AuthGate';
+import { DashboardProfileMenu } from '@/components/DashboardProfileMenu';
 
 export default function OrganizerDashboardPage() {
   const { user, organizer, connectStripeAccount, disconnectStripeAccount } = useAuth();
@@ -73,8 +74,8 @@ export default function OrganizerDashboardPage() {
   const [newTotalQty, setNewTotalQty] = useState('180');
   const [newDesc, setNewDesc] = useState('');
 
-  // Get organizer records
-  const myOrganizer = organizer || db.getOrganizers()[0];
+  // Get organizer records — strictly for the logged-in user, no fallback to random first organizer
+  const myOrganizer = organizer || (user ? db.getOrganizerByUserId(user.id) : null);
   const allEvents = myOrganizer ? db.getEvents({ organizerId: myOrganizer.id }) : [];
   const allOrders = myOrganizer ? db.getOrders({ organizerId: myOrganizer.id }) : [];
 
@@ -435,6 +436,7 @@ export default function OrganizerDashboardPage() {
               placeholder="Search..."
               value={searchQuery}
               className="w-full bg-[#17152b] border border-[#2b2848] text-sm text-slate-200 placeholder:text-slate-500 rounded-full pl-11 pr-4 py-2.5 focus:outline-none focus:border-[#d9072a] transition shadow-inner"
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -482,24 +484,8 @@ export default function OrganizerDashboardPage() {
               <span className="w-2 h-2 rounded-full bg-[#d9072a] absolute top-2.5 right-2.5" />
             </button>
 
-            {/* User Profile */}
-            <div className="flex items-center gap-3 pl-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-[#d9072a]/50 shadow-md shadow-[#d9072a]/20">
-                <img
-                  src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=160&h=160&q=80"
-                  alt="Robert"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="hidden sm:block text-left">
-                <div className="font-bold text-sm text-white leading-tight">
-                  {user.full_name || 'Robert'}
-                </div>
-                <div className="text-[11px] text-slate-400">
-                  {organizer ? 'Comedy Club Producer' : 'Product Designer'}
-                </div>
-              </div>
-            </div>
+            {/* User Profile – real logged-in user data, clickable menu */}
+            <DashboardProfileMenu accentColor="red" />
           </div>
         </header>
 
