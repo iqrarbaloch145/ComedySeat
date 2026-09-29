@@ -92,6 +92,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { success: false, message: 'Full name and email are required.' };
     }
 
+    // Administrators can only be created via the database — never via public registration
+    if (role === 'super_admin') {
+      return { success: false, message: 'Administrator accounts cannot be self-registered. Contact platform support.' };
+    }
+
     const created = db.createUserProfile(cleanEmail, cleanName, role, businessName);
     switchUser(created.id);
     return {

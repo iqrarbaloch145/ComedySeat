@@ -13,7 +13,6 @@ import {
   Mail, 
   User, 
   Building2, 
-  Shield, 
   ArrowRight, 
   AlertCircle, 
   CheckCircle2, 
@@ -32,8 +31,7 @@ function RegisterFormContent() {
 
   const { register } = useAuth();
   const [role, setRole] = useState<UserRole>(
-    initialRoleParam === 'organizer' ? 'organizer' : 
-    initialRoleParam === 'super_admin' ? 'super_admin' : 'customer'
+    initialRoleParam === 'organizer' ? 'organizer' : 'customer'
   );
   const [fullName, setFullName] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -62,8 +60,6 @@ function RegisterFormContent() {
         const dest = redirectUrl || (
           role === 'organizer' 
             ? '/dashboard/organizer' 
-            : role === 'super_admin' 
-            ? '/dashboard/admin' 
             : '/dashboard/customer'
         );
         router.push(dest);
@@ -83,7 +79,7 @@ function RegisterFormContent() {
             Create Your Account
           </h1>
           <p className="text-xs text-slate-400">
-            Join the dedicated comedy ticketing network as a fan, club organizer, or administrator.
+            Join the dedicated comedy ticketing network as a fan or club organizer.
           </p>
         </div>
 
@@ -110,16 +106,16 @@ function RegisterFormContent() {
           <div className="flex items-center justify-between text-xs">
             <label className="font-semibold text-slate-300">Choose your registration role:</label>
             <span className="text-[11px] text-[#ff4d6d] font-mono uppercase tracking-wider">
-              {role === 'customer' ? 'Comedy Fan' : role === 'organizer' ? 'Club Organizer' : 'Admin'}
+              {role === 'customer' ? 'Comedy Fan' : 'Club Organizer'}
             </span>
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {/* Customer Role */}
             <button
               type="button"
               onClick={() => { setRole('customer'); setErrorMsg(null); }}
-              className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
+              className={`p-4 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
                 role === 'customer'
                   ? 'bg-sky-500/15 border-sky-500 text-white shadow-sm ring-1 ring-sky-500/40'
                   : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-300'
@@ -136,7 +132,7 @@ function RegisterFormContent() {
             <button
               type="button"
               onClick={() => { setRole('organizer'); setErrorMsg(null); }}
-              className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
+              className={`p-4 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
                 role === 'organizer'
                   ? 'bg-[#d9072a]/20 border-[#d9072a] text-white shadow-sm ring-1 ring-[#d9072a]/40'
                   : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-300'
@@ -146,24 +142,7 @@ function RegisterFormContent() {
                 <Building2 className="w-4 h-4" />
               </div>
               <span className="text-xs font-bold leading-tight">Organizer</span>
-              <span className="text-[10px] text-slate-400">Sell & Payouts</span>
-            </button>
-
-            {/* Super Admin Role */}
-            <button
-              type="button"
-              onClick={() => { setRole('super_admin'); setErrorMsg(null); }}
-              className={`p-3 rounded-xl border text-center transition-all flex flex-col items-center gap-1.5 ${
-                role === 'super_admin'
-                  ? 'bg-amber-500/15 border-amber-500 text-white shadow-sm ring-1 ring-amber-500/40'
-                  : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-300'
-              }`}
-            >
-              <div className={`p-1.5 rounded-lg ${role === 'super_admin' ? 'bg-amber-500/20 text-amber-400' : 'bg-white/5 text-slate-400'}`}>
-                <Shield className="w-4 h-4" />
-              </div>
-              <span className="text-xs font-bold leading-tight">Admin</span>
-              <span className="text-[10px] text-slate-400">Full System</span>
+              <span className="text-[10px] text-slate-400">Sell &amp; Payouts</span>
             </button>
           </div>
         </div>
@@ -176,10 +155,7 @@ function RegisterFormContent() {
               <span><strong>User Benefits:</strong> Interactive table seat selection, 10-minute hold guarantee, instant QR admission tickets.</span>
             )}
             {role === 'organizer' && (
-              <span><strong>Organizer Benefits:</strong> Direct Stripe box office payouts, custom comedy tiers, door QR scanner & sales analytics.</span>
-            )}
-            {role === 'super_admin' && (
-              <span><strong>Admin Benefits:</strong> Comprehensive system audit trail, organizer verification, fee management & platform metrics.</span>
+              <span><strong>Organizer Benefits:</strong> Direct Stripe box office payouts, custom comedy tiers, door QR scanner &amp; sales analytics.</span>
             )}
           </div>
         </div>
@@ -273,8 +249,6 @@ function RegisterFormContent() {
             {loading ? 'Creating Account...' : (
               role === 'organizer' 
                 ? 'Register as Event Organizer & Get Started' 
-                : role === 'super_admin' 
-                ? 'Register as Administrator' 
                 : 'Register as Comedy Fan'
             )}
             <ArrowRight className="w-4 h-4 ml-2" />
@@ -288,7 +262,7 @@ function RegisterFormContent() {
             href={`/auth/login?role=${role}${redirectUrl ? `&redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
             className="text-[#ff4d6d] font-bold hover:underline"
           >
-            Sign in as {role === 'organizer' ? 'Organizer' : role === 'super_admin' ? 'Admin' : 'User'} →
+            Sign in as {role === 'organizer' ? 'Organizer' : 'Fan'} →
           </Link>
         </div>
       </div>
