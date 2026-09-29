@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/lib/auth-context';
-import { DemoSwitcher } from '@/components/DemoSwitcher';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
@@ -26,7 +25,6 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <AuthProvider>
-          <DemoSwitcher />
           <Navbar />
           <main className="flex-1 flex flex-col relative z-10">
             {children}
