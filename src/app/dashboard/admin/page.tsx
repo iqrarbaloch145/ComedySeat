@@ -45,6 +45,7 @@ import { Input } from '@/components/ui/input';
 import { AuthGate } from '@/components/AuthGate';
 import { ComedySeatLogo } from '@/components/ComedySeatLogo';
 import { DashboardProfileMenu } from '@/components/DashboardProfileMenu';
+import { DashboardSettingsPanel } from '@/components/DashboardSettingsPanel';
 
 export default function AdminDashboardPage() {
   const { user, logout } = useAuth();
@@ -335,6 +336,17 @@ export default function AdminDashboardPage() {
             {!sidebarCollapsed && <span>Organizer View</span>}
           </Link>
           <button
+            onClick={() => setActiveTab('settings')}
+            className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition ${
+              activeTab === 'settings'
+                ? 'bg-gradient-to-r from-[#d9072a] to-[#99051d] text-white shadow-lg shadow-[#d9072a]/35'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Settings className="w-4 h-4 shrink-0" />
+            {!sidebarCollapsed && <span>Account Settings</span>}
+          </button>
+          <button
             onClick={() => logout()}
             className="w-full flex items-center gap-3.5 px-3.5 py-2 rounded-2xl text-xs font-medium text-slate-400 hover:text-white hover:bg-white/5 transition"
           >
@@ -395,7 +407,7 @@ export default function AdminDashboardPage() {
             </button>
 
             {/* User Profile – real logged-in admin data, clickable with Settings + Logout */}
-            <DashboardProfileMenu accentColor="amber" />
+            <DashboardProfileMenu accentColor="amber" onOpenSettings={() => setActiveTab('settings')} />
           </div>
         </header>
 
@@ -1005,6 +1017,11 @@ export default function AdminDashboardPage() {
               </table>
             </div>
           </div>
+        )}
+
+        {/* ===================== TAB: ACCOUNT SETTINGS ===================== */}
+        {activeTab === 'settings' && (
+          <DashboardSettingsPanel />
         )}
       </main>
     </div>

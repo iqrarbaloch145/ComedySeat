@@ -43,13 +43,14 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { AuthGate } from '@/components/AuthGate';
 import { DashboardProfileMenu } from '@/components/DashboardProfileMenu';
+import { DashboardSettingsPanel } from '@/components/DashboardSettingsPanel';
 
 export default function OrganizerDashboardPage() {
   const { user, organizer, connectStripeAccount, disconnectStripeAccount } = useAuth();
 
   // Navigation tab state matching sidebar in screenshot
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'calendars' | 'events' | 'tickets' | 'orders' | 'customers' | 'checkin' | 'promotions' | 'analytics' | 'payouts'
+    'overview' | 'calendars' | 'events' | 'tickets' | 'orders' | 'customers' | 'checkin' | 'promotions' | 'analytics' | 'payouts' | 'settings'
   >('overview');
 
   // UI state
@@ -408,11 +409,15 @@ export default function OrganizerDashboardPage() {
         {/* Bottom Sidebar Footer */}
         <div className="px-4 py-6 border-t border-[#1b1933] space-y-1">
           <button
-            onClick={() => setActiveTab('payouts')}
-            className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-2xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition"
+            onClick={() => setActiveTab('settings')}
+            className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-2xl text-sm font-medium transition ${
+              activeTab === 'settings'
+                ? 'bg-gradient-to-r from-[#d9072a] to-[#99051d] text-white shadow-lg shadow-[#d9072a]/30'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
           >
             <Settings className="w-4 h-4 shrink-0" />
-            {!sidebarCollapsed && <span>Settings</span>}
+            {!sidebarCollapsed && <span>Account Settings</span>}
           </button>
           <a
             href="mailto:support@comedyseat.com"
@@ -485,7 +490,7 @@ export default function OrganizerDashboardPage() {
             </button>
 
             {/* User Profile – real logged-in user data, clickable menu */}
-            <DashboardProfileMenu accentColor="red" />
+            <DashboardProfileMenu accentColor="red" onOpenSettings={() => setActiveTab('settings')} />
           </div>
         </header>
 
@@ -1540,6 +1545,13 @@ export default function OrganizerDashboardPage() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* ===================== TAB: ACCOUNT SETTINGS ===================== */}
+      {activeTab === 'settings' && (
+        <div className="flex-1">
+          <DashboardSettingsPanel />
         </div>
       )}
     </div>

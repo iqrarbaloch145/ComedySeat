@@ -18,9 +18,11 @@ import {
 interface DashboardProfileMenuProps {
   /** Accent colour for the avatar ring – matches the dashboard theme */
   accentColor?: 'red' | 'amber' | 'purple';
+  /** Called when the user clicks "Account Settings" — opens settings in-dashboard */
+  onOpenSettings?: () => void;
 }
 
-export function DashboardProfileMenu({ accentColor = 'red' }: DashboardProfileMenuProps) {
+export function DashboardProfileMenu({ accentColor = 'red', onOpenSettings }: DashboardProfileMenuProps) {
   const { user, organizer, logout } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -176,14 +178,20 @@ export function DashboardProfileMenu({ accentColor = 'red' }: DashboardProfileMe
 
             {/* Settings */}
             <div className="border-t border-white/5 pt-1.5 space-y-0.5 text-xs">
-              <Link
-                href="/profile/settings"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-slate-300 hover:text-white transition group"
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  if (onOpenSettings) {
+                    onOpenSettings();
+                  } else {
+                    router.push('/profile/settings');
+                  }
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/5 text-slate-300 hover:text-white transition group text-left"
               >
                 <Settings className="w-4 h-4 text-slate-400 group-hover:rotate-45 transition-transform duration-300" />
                 <span>Account Settings</span>
-              </Link>
+              </button>
             </div>
 
             {/* Sign Out */}

@@ -38,7 +38,8 @@ import {
   Globe,
   Lock,
   Layers,
-  CreditCard
+  CreditCard,
+  Settings
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -46,12 +47,13 @@ import { Input } from '@/components/ui/input';
 import { AuthGate } from '@/components/AuthGate';
 import { ComedySeatLogo } from '@/components/ComedySeatLogo';
 import { DashboardProfileMenu } from '@/components/DashboardProfileMenu';
+import { DashboardSettingsPanel } from '@/components/DashboardSettingsPanel';
 
 export default function CustomerDashboardPage() {
   const { user, upgradeToOrganizer, logout } = useAuth();
 
   // Navigation tab state
-  const [activeTab, setActiveTab] = useState<'tickets' | 'orders' | 'shows' | 'venues' | 'rewards' | 'support' | 'profile'>('tickets');
+  const [activeTab, setActiveTab] = useState<'tickets' | 'orders' | 'shows' | 'venues' | 'rewards' | 'support' | 'settings'>('tickets');
   
   // UI state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -301,7 +303,19 @@ export default function CustomerDashboardPage() {
                   }`}
                 >
                   <HelpCircle className="w-4 h-4 shrink-0" />
-                  {!sidebarCollapsed && <span>Disputes & Refunds</span>}
+                  {!sidebarCollapsed && <span>Disputes &amp; Refunds</span>}
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('settings')}
+                  className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-2xl text-sm font-semibold transition-all ${
+                    activeTab === 'settings'
+                      ? 'bg-gradient-to-r from-[#d9072a] to-[#99051d] text-white shadow-lg shadow-[#d9072a]/35'
+                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <Settings className="w-4 h-4 shrink-0" />
+                  {!sidebarCollapsed && <span>Account Settings</span>}
                 </button>
               </nav>
             </div>
@@ -394,7 +408,7 @@ export default function CustomerDashboardPage() {
             </button>
 
             {/* User Profile – real user data, clickable with Settings + Logout */}
-            <DashboardProfileMenu accentColor="red" />
+            <DashboardProfileMenu accentColor="red" onOpenSettings={() => setActiveTab('settings')} />
           </div>
         </header>
 
@@ -925,6 +939,15 @@ export default function CustomerDashboardPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* ===================== TAB: ACCOUNT SETTINGS ===================== */}
+        {activeTab === 'settings' && (
+          <DashboardSettingsPanel
+            onLogout={() => {
+              logout();
+            }}
+          />
         )}
       </main>
     </div>
