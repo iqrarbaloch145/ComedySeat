@@ -1,5 +1,5 @@
 -- ====================================================================
--- COMPLETE SUPABASE SETUP SCRIPT: EventHub Multi-Vendor Platform
+-- COMPLETE SUPABASE SETUP SCRIPT: ComedySeat Comedy Ticketing Marketplace
 -- Run this in your Supabase SQL Editor to execute all tables,
 -- functions, RLS policies, storage buckets, and seed data in one step!
 -- ====================================================================
@@ -756,3 +756,24 @@ BEGIN
     );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 6. DEFAULT PLATFORM SETTINGS & COMEDY CATEGORIES
+INSERT INTO public.platform_settings (key, value, description)
+VALUES 
+    ('platform_name', '"ComedySeat"'::jsonb, 'Platform name displayed in header and emails'),
+    ('payment_mode', '"stripe_connect_direct"'::jsonb, 'Connected merchant gateway with direct payments to comedy producers'),
+    ('stripe_connect_client_id', '"ca_demo_test_client_id"'::jsonb, 'Stripe Connect Client ID for OAuth'),
+    ('supported_currencies', '["USD", "EUR", "GBP", "CAD", "AUD"]'::jsonb, 'Supported ticket currencies'),
+    ('platform_fee_percent', '0'::jsonb, 'Initial platform commission is 0%')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+INSERT INTO public.event_categories (name, slug, icon, description)
+VALUES 
+    ('Stand up Comedy', 'stand-up-comedy', 'Mic', 'Live headliner showcases, comedy club nights, and national comedy tours.'),
+    ('Improv', 'improv', 'Sparkles', 'Fast-paced unscripted comedy, troupe battles, and sketch showcases.'),
+    ('Open Mic', 'open-mic', 'Smile', 'Raw rookie talent, new joke testing, and underground rooms.'),
+    ('Comedy Festivals', 'comedy-festivals', 'Ticket', 'Multi-day galas, comedy celebrations, and national comedy honors.'),
+    ('Comedy Theater', 'comedy-theater', 'Building2', 'Broadway farces, satire plays, and comedic musicals.'),
+    ('Comedy Courses', 'comedy-courses', 'BookOpen', '6-week stand-up writing workshops, stagecraft, and improv masterclasses.')
+ON CONFLICT (slug) DO NOTHING;
+

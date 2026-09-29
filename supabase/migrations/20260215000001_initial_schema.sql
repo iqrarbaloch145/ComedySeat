@@ -1,5 +1,5 @@
 -- ====================================================================
--- MIGRATION 1: Initial Schema for Multi-Vendor Event & Ticket Booking
+-- MIGRATION 1: Initial Schema for ComedySeat Ticketing Marketplace
 -- ====================================================================
 
 -- 1. Enable necessary extensions

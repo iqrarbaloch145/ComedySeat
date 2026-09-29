@@ -5,22 +5,22 @@
 -- 1. Insert Default Platform Settings
 INSERT INTO public.platform_settings (key, value, description)
 VALUES 
-    ('platform_name', '"EventHub Multi-Vendor"'::jsonb, 'Platform name displayed in header and emails'),
-    ('payment_mode', '"stripe_connect_direct"'::jsonb, 'Connected merchant gateway with direct payments to organizers'),
+    ('platform_name', '"ComedySeat"'::jsonb, 'Platform name displayed in header and emails'),
+    ('payment_mode', '"stripe_connect_direct"'::jsonb, 'Connected merchant gateway with direct payments to comedy producers'),
     ('stripe_connect_client_id', '"ca_demo_test_client_id"'::jsonb, 'Stripe Connect Client ID for OAuth'),
     ('supported_currencies', '["USD", "EUR", "GBP", "CAD", "AUD"]'::jsonb, 'Supported ticket currencies'),
     ('platform_fee_percent', '0'::jsonb, 'Initial platform commission is 0%')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
--- 2. Insert Default Categories
+-- 2. Insert Default Comedy Categories
 INSERT INTO public.event_categories (name, slug, icon, description)
 VALUES 
-    ('Music & Concerts', 'music-concerts', 'Music', 'Live gigs, electronic festivals, acoustic sets, and orchestra performances'),
-    ('Tech & Innovation', 'tech-innovation', 'Cpu', 'AI conferences, developer hackathons, robotics expos, and cloud summits'),
-    ('Arts & Theater', 'arts-theater', 'Palette', 'Visual art exhibitions, Broadway theater shows, poetry slams, and film screenings'),
-    ('Business & Networking', 'business-networking', 'Briefcase', 'Investor pitch events, founder roundtables, leadership masterclasses'),
-    ('Sports & Fitness', 'sports-fitness', 'Trophy', 'Marathons, MMA tournaments, yoga retreats, and esports championships'),
-    ('Food & Drink', 'food-drink', 'Utensils', 'Craft beer festivals, wine tastings, culinary chef competitions')
+    ('Stand up Comedy', 'stand-up-comedy', 'Mic', 'Live headliner showcases, comedy club nights, and national comedy tours.'),
+    ('Improv', 'improv', 'Sparkles', 'Fast-paced unscripted comedy, troupe battles, and sketch showcases.'),
+    ('Open Mic', 'open-mic', 'Smile', 'Raw rookie talent, new joke testing, and underground rooms.'),
+    ('Comedy Festivals', 'comedy-festivals', 'Ticket', 'Multi-day galas, comedy celebrations, and national comedy honors.'),
+    ('Comedy Theater', 'comedy-theater', 'Building2', 'Broadway farces, satire plays, and comedic musicals.'),
+    ('Comedy Courses', 'comedy-courses', 'BookOpen', '6-week stand-up writing workshops, stagecraft, and improv masterclasses.')
 ON CONFLICT (slug) DO NOTHING;
 
 -- 3. Pre-create Demo UUIDs
