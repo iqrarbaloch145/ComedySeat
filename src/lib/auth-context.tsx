@@ -10,7 +10,7 @@ interface AuthContextType {
   demoUsers: Profile[];
   isLoaded: boolean;
   login: (email: string, password?: string) => Promise<{ success: boolean; message: string; user?: Profile }>;
-  register: (fullName: string, email: string, password?: string, role?: UserRole) => Promise<{ success: boolean; message: string; user?: Profile }>;
+  register: (fullName: string, email: string, password?: string, role?: UserRole, businessName?: string) => Promise<{ success: boolean; message: string; user?: Profile }>;
   logout: () => void;
   switchUser: (userId: string | null) => void;
   upgradeToOrganizer: (businessName?: string) => Promise<{ success: boolean; message: string }>;
@@ -85,14 +85,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   };
 
-  const register = async (fullName: string, email: string, _password?: string, role: UserRole = 'customer') => {
+  const register = async (fullName: string, email: string, _password?: string, role: UserRole = 'customer', businessName?: string) => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanName = fullName.trim();
     if (!cleanName || !cleanEmail) {
       return { success: false, message: 'Full name and email are required.' };
     }
 
-    const created = db.createUserProfile(cleanEmail, cleanName, role);
+    const created = db.createUserProfile(cleanEmail, cleanName, role, businessName);
     switchUser(created.id);
     return {
       success: true,

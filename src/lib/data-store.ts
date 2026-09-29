@@ -655,7 +655,7 @@ export const db = {
   getProfiles: () => globalStore.profiles,
   getProfileById: (id: string) => globalStore.profiles.find((p: Profile) => p.id === id),
   getProfileByEmail: (email: string) => globalStore.profiles.find((p: Profile) => p.email.toLowerCase() === email.toLowerCase()),
-  createUserProfile: (email: string, fullName: string, role: UserRole = 'customer') => {
+  createUserProfile: (email: string, fullName: string, role: UserRole = 'customer', businessName?: string) => {
     const existing = globalStore.profiles.find((p: Profile) => p.email.toLowerCase() === email.toLowerCase());
     if (existing) {
       return existing;
@@ -673,11 +673,12 @@ export const db = {
 
     // If registered as organizer, generate organizer record
     if (role === 'organizer') {
-      const slug = fullName.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(100 + Math.random() * 900);
+      const bName = businessName?.trim() || `${fullName}'s Comedy Productions`;
+      const slug = bName.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(100 + Math.random() * 900);
       globalStore.organizers.push({
         id: crypto.randomUUID(),
         user_id: newProfile.id,
-        business_name: `${fullName}'s Comedy Productions`,
+        business_name: bName,
         slug,
         bio: 'Independent comedy producer and venue host on ComedySeat.',
         logo_url: newProfile.avatar_url,

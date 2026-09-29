@@ -9,7 +9,7 @@ import { ComedySeatLogo } from './ComedySeatLogo';
 export function Footer() {
   const pathname = usePathname();
 
-  if (pathname?.startsWith('/dashboard')) {
+  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/profile')) {
     return null;
   }
   return (
@@ -19,11 +19,6 @@ export function Footer() {
           {/* Brand Info */}
           <div className="space-y-4">
             <ComedySeatLogo size="md" subtitle="Pull Up A Seat To Comedy" />
-            <img
-              src="/images/comedyseat-logo.png"
-              alt="ComedySeat - Pull Up A Seat To Comedy"
-              className="h-7 w-auto object-contain opacity-90"
-            />
             <p className="text-xs text-slate-400 leading-relaxed">
               Pull Up A Seat To Comedy. The exclusive comedy event ticketing marketplace where comedy clubs, stand-up producers, and independent festival creators receive payments directly into their own connected merchant accounts.
             </p>
